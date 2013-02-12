@@ -1,0 +1,33 @@
+/*
+Analog Write
+ */
+ 
+float t=0;
+float sinusoid=0;
+int F_ROOT=440;
+int F_FIFTH=660;
+int magnitude=256/4;
+
+// the setup routine runs once when you press reset:
+void setup() {                
+  // initialize the pins as an output.
+  pinMode(DAC0, OUTPUT);
+  pinMode(DAC1, OUTPUT);  
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  //analogWrite(DAC0,255);
+  if(t>100){
+    t=0;
+  }else{
+    t+=.0000781;  
+  }
+  
+  sinusoid = 0;
+  sinusoid += magnitude*sin(2*3.141592654*F_ROOT*t)+magnitude;
+  sinusoid += magnitude*sin(2*3.141592654*F_FIFTH*t)+magnitude; 
+  
+  analogWrite(DAC0,int(sinusoid));
+  //analogWrite(DAC0,0);
+}
