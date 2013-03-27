@@ -1,0 +1,55 @@
+float t=0;
+float sinusoid=0;
+int F_ROOT=440;
+int F_FIFTH=660;
+short magnitude=256/2;
+const long fileSize=65536/2;
+const long length = 1024;
+
+short wave[fileSize];
+short buffer[length];
+
+
+long ind=0;
+
+void setup() {
+ 
+//set AnalogWrite Resolution here to 10 bits -- future work
+
+pinMode(DAC1, OUTPUT);
+pinMode(DAC0, OUTPUT);
+
+//
+//make the sound file for the root of chord
+for(long i=0;i<fileSize;i++ /*increment t as well here based on experimentally determined looptime*/){
+  wave[i] = short(magnitude*sin(2*3.141592654*F_ROOT*t)+magnitude);
+}
+
+}
+
+void loop() {
+  
+  
+  if(ind>fileSize){ind=0;}
+  
+  //simulates reading the buffer from a sound file
+  for(int i=0; i<length; i++){
+    buffer[i] = wave[ind+i];
+    
+    //buffer[i] += wave_THIRD[ind+i];
+    //FIFTH[i] = wave_FIFTH[ind+i];
+  }
+  
+ 
+  //play the sampled sine wave
+  //to do: Measure this looptime
+  for(int i=0; i<length; i++){
+      analogWrite(DAC0,buffer[i]);
+      //analogWrite(DAC1,FIFTH[i])
+  }
+  
+  //keeps track of where in the sound file you are
+  ind += length;
+  
+  
+}
