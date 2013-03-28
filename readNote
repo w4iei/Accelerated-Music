@@ -1,0 +1,19 @@
+/*readNote
+Test Code written by Noah.
+
+Function Description:
+Given a note name that needs to be played i.e.: 'c4', this function will 
+return the audio samples that correspond to that note.
+
+*/
+
+/* Code Untested.
+//Test Code written by Noah.
+int readNote(String noteName) 
+{
+	
+
+
+
+}
+*/
