@@ -1,0 +1,78 @@
+#include <Audio.h>
+float t=0;
+float sinusoid=0;
+int F_ROOT=440;
+int F_FIFTH=660;
+short magnitude=1024;
+const long fileSize=32768;
+const long length = 1024;
+
+short wave[fileSize];
+short buffer[length];
+
+
+long ind=0;
+
+void setup() {
+ 
+//set AnalogWrite Resolution here to 10 bits -- future work
+ Audio.begin(44100, 100);
+pinMode(DAC1, OUTPUT);
+pinMode(DAC0, OUTPUT);
+analogWriteResolution(12);
+
+//make the sound file for the root of chord
+for(long i=0;i<fileSize;i++ /*increment t as well here based on experimentally determined looptime*/){
+  wave[i] = short(.4*magnitude*sin(2*3.141592654*F_ROOT*t)+magnitude);
+
+   
+     wave[i] += short(.2*magnitude*sin(2*2*3.141592654*F_ROOT*t+70)+magnitude);
+     wave[i] += short(.7*magnitude*sin(3*2*3.141592654*F_ROOT*t+25)+magnitude);
+     wave[i] += short(.3*magnitude*sin(5*2*3.141592654*F_ROOT*t+500)+magnitude);
+
+     t+=.0000226;    
+}
+
+}
+
+void loop() {
+  
+  
+  if(ind>=fileSize-length-1)
+    ind=0;
+  
+  //simulates reading the buffer from a sound file
+  for(int i=0; i<length; i++){
+    buffer[i] = wave[ind+i];
+    
+    //buffer[i] += wave_THIRD[ind+i];
+    //FIFTH[i] = wave_FIFTH[ind+i];
+  }
+  
+ 
+  //play the sampled sine wave
+  //to do: Measure this looptime
+ 
+    int volume = 1024;
+    Audio.prepare(buffer, length, volume);
+    Audio.write(buffer, length);
+  
+  //keeps track of where in the sound file you are
+  ind += length;
+  
+  
+}
+//short* makeWave(int f)
+//{
+// for(long i=0;i<fileSize;i++ /*increment t as well here based on experimentally determined looptime*/){
+//  wave[i] = short(.4*magnitude*sin(2*3.141592654*f*t)+magnitude);
+//
+//   
+//     wave[i] += short(.2*magnitude*sin(2*2*3.141592654*F_ROOT*t+70)+magnitude);
+//     wave[i] += short(.7*magnitude*sin(3*2*3.141592654*F_ROOT*t+25)+magnitude);
+//     wave[i] += short(.3*magnitude*sin(5*2*3.141592654*F_ROOT*t+500)+magnitude);
+//
+//     t+=.0000226;    
+//     return &wave;
+//} 
+//}
