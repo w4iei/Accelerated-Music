@@ -1,0 +1,115 @@
+//MIDICODE
+
+void setup() {
+  //  Set MIDI baud rate:
+  Serial.begin(31250);
+  resetMIDI();
+}
+
+void loop() {
+  // play notes from F#-0 (0x1E) to F#-5 (0x5A):
+  for (int note = 0x1E; note < 0x5A; note ++) {
+    //Note on channel 1 (0x90), some note value (note), middle velocity (0x45):
+    noteOn(0x90, note, 0x45);
+    delay(100);
+    //Note on channel 1 (0x90), some note value (note), silent velocity (0x00):
+    noteOn(0x90, note, 0x00);   
+    delay(100);
+  }
+}
+
+//  plays a MIDI note.  Doesn't check to see that
+//  cmd is greater than 127, or that data values are  less than 127:
+void noteOn(int cmd, int pitch, int velocity) {
+  Serial.write(cmd);
+  Serial.write(pitch);
+  Serial.write(velocity);
+}
+
+void resetMIDI(){ //Turns off all notes on channel 1.
+  for (int note = 0x1E; note < 0x6D; note ++) 
+    //Note on channel 1 (0x90), some note value (note), silent velocity (0x00):
+    noteOn(0x90, note, 0x00);   
+}
+void playChord(int chordNumber, int loudness){ //Loudness is an int from 0 (off) to 127
+int root = 0;
+switch (chordNumber){
+	case 0: //Tonic, I chord
+		root = 0x30;
+		noteOn(0x90, root, loudness); //Channel 1, C3, volume
+		noteOn(0x90, root+4, loudness); 	
+		noteOn(0x90, root+7, loudness); 
+		break;
+	case 1: //Tonic, I chord, first Inversion
+		root = 0x30;
+		noteOn(0x90, root+12, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness); 
+		break;
+	case 2: //Tonic, vi chord, first Inversion
+		root = 0x30;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness);	
+		noteOn(0x90, root+9, loudness); 
+		break;
+	case 3: //Tonic, vi chord, root position
+		root = 0x30;
+		noteOn(0x90, root, loudness);
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root-3, loudness); 
+		break;
+	case 4: //Predominant, IV chord, root position
+		root = 0x30+5;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness);
+		break;
+	case 5: //Predominant, ii65 chord, 1st inversion 7th chord
+		root = 0x30+2;
+		noteOn(0x90, root+3, loudness); 
+		noteOn(0x90, root+7, loudness); 
+		noteOn(0x90, root+12, loudness);
+		noteOn(0x90, root+10, loudness);
+		break;
+	case 6: //Predominant, IV7 chord, root position
+		root = 0x30+5;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness);
+		noteOn(0x90, root+11, loudness);
+		break;
+	case 7: //Predominant, IV65 chord, 1st inversion 7th chord
+		root = 0x30+5;
+		noteOn(0x90, root+12, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness);
+		noteOn(0x90, root+11, loudness);
+		break;
+	case 8: //Dominant, V chord, Root Position
+		root = 0x30+7;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness);
+		break;
+	case 9: //Dominant, V7 chord, Root Position
+		root = 0x30+7;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root+7, loudness);
+		noteOn(0x90, root+10, loudness);
+		break;
+	case 10: //Dominant, V6 chord, 1st inversion 
+		root = 0x30+7;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root+4, loudness); 
+		noteOn(0x90, root-5, loudness);
+		break;
+	case 11: //Dominant, V65 chord, 7th chord 1st inversion 
+		root = 0x30+7;
+		noteOn(0x90, root, loudness); 
+		noteOn(0x90, root-8, loudness); 
+		noteOn(0x90, root+7, loudness); 
+		noteOn(0x90, root+10, loudness);
+		break;
+	}
+}
