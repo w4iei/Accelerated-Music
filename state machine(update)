@@ -1,0 +1,468 @@
+  
+  #include <Wire.h>
+  #include <math.h>
+  
+  #define First_DEVICE (0x53)    //first ADXL345 device address
+  #define Second_DEVICE (0x1D)   //second ADXL345 device address
+  #define TO_READ (6)        //num of bytes we are going to read each time (two bytes for each axis)
+  
+  byte buff[TO_READ] ;    //6 bytes buffer for saving data read from the device
+  
+  
+  void setup()
+ {
+   
+   Wire.begin();        // join i2c bus (address optional for master)
+   Serial.begin(115200);  // start serial for output
+   
+   //Turning on the ADXL345
+   writeTo(First_DEVICE, 0x2D, 0);      
+   writeTo(First_DEVICE, 0x2D, 16);
+   writeTo(First_DEVICE, 0x2D, 8);
+   writeTo(Second_DEVICE, 0x2D, 0);      
+   writeTo(Second_DEVICE, 0x2D, 16);
+   writeTo(Second_DEVICE, 0x2D, 8);
+ } 
+ 
+  //**************global variable*******************// 
+    int x, y, z; 
+    double accl_x,accl_y,accl_z;
+    double mag;
+    double a, b, c;
+    
+    int x2, y2, z2;   
+    double accl_x2,accl_y2,accl_z2;
+    double mag2;
+    double a2, b2, c2;
+    
+    int count = 0;
+    boolean check = false;
+  //**********************************************//
+  
+  
+  void loop()
+  {   
+   int regAddress = 0x32;  //register address for first devie and second device 
+   readFrom(First_DEVICE, regAddress, TO_READ, buff); //read the acceleration data from the ADXL345
+    
+   //each axis reading comes in 10 bit resolution, ie 2 bytes.  Least Significat Byte first!!
+   //thus we are converting both bytes in to one int
+   x = (((int)buff[1]) << 8) | buff[0];   
+   y = (((int)buff[3])<< 8) | buff[2];
+   z = (((int)buff[5]) << 8) | buff[4];
+   
+   readFrom(Second_DEVICE, regAddress, TO_READ, buff); //read the acceleration data from the ADXL345
+    
+   //each axis reading comes in 10 bit resolution, ie 2 bytes.  Least Significat Byte first!!
+   //thus we are converting both bytes in to one int
+   x2 = (((int)buff[1]) << 8) | buff[0];   
+   y2 = (((int)buff[3])<< 8) | buff[2];
+   z2 = (((int)buff[5]) << 8) | buff[4];
+   
+   //calculate all information from first device
+   //offset raw datas
+   x = x-20;
+   y = y-6;
+   z = z+4;
+   
+   
+  //if raw datas are negative 
+  if(x>10000)
+  {
+  x = x-65536;
+  }
+  if(y>10000)
+  {
+  y = y-65536;
+  }
+  if(z>10000)
+  {
+  z = z-65536;
+  }
+  
+  //convert raw datas to G values
+  accl_x = 0.00391*x;
+  accl_y = 0.00391*y;
+  accl_z = 0.00391*z;
+  
+  //find magnitde of accelration
+  mag = sqrt(pow(accl_x,2) + pow(accl_y,2) + pow(accl_z,2));
+  
+  //find angels 
+  a = atan(accl_x / sqrt(sq(accl_y) + sq(accl_z))) * 180 / PI;
+  b  = atan(accl_y / sqrt(sq(accl_x) + sq(accl_z))) * 180 / PI;
+  c = atan(sqrt(sq(accl_x) + sq(accl_y)) / accl_z) * 180 / PI;
+  
+  if(a >= 0 && b >= 0 && c>=0) 
+  {
+    a = a;
+    b= b;
+    c = c;
+  }
+  else if(a >= 0 && b >= 0 && c<0)
+  {
+    a = 180.00-a;
+    b= 180.00-b;
+    c = c+180.00;
+  }
+  else if(a >= 0 && b < 0 && c>=0)
+  {
+    a = a;
+    b= b+360.00;
+    c = c;
+  }
+  else if(a >= 0 && b < 0 && c<0)
+  {
+    a = 180.00-a;
+    b= 180.00-b;
+    c = c+180.00;
+  }
+ else if(a < 0 && b >= 0 && c>=0) 
+  {
+    a = a+360;
+    b= b;
+    c = c;
+  }
+  else if(a < 0 && b >= 0 && c<0)
+  {
+    a = 180.00-a;
+    b= 180.00-b;
+    c = 180.00-c;
+  }
+  else if(a < 0 && b < 0 && c>=0)
+  {
+    a = a+360.00;
+    b= b+360.00;
+    c = 360.00-c;
+  }
+  else
+  {
+    a = 180.00-a;
+    b= 180.00-b;
+    c = c+180.00;
+  }
+  
+  //calculate all information from second device
+   //offset raw datas
+   x2 = x2-20;
+   y2 = y2;
+   z2 = z2+8;
+   
+   
+  //if raw datas are negative 
+  if(x2>10000)
+  {
+  x2 = x2-65536;
+  }
+  if(y2>10000)
+  {
+  y2 = y2-65536;
+  }
+  if(z2>10000)
+  {
+  z2 = z2-65536;
+  }
+  
+  //convert raw datas to G values
+  accl_x2 = 0.00391*x2;
+  accl_y2 = 0.00391*y2;
+  accl_z2 = 0.00391*z2;
+  
+  //find magnitde of accelration
+  mag2 = sqrt(pow(accl_x2,2) + pow(accl_y2,2) + pow(accl_z2,2));
+  
+  //find angels 
+  a2 = atan(x2 / sqrt(sq(y2) + sq(z2))) * 180 / PI;
+  b2  = atan(y2 / sqrt(sq(x2) + sq(z2))) * 180 / PI;
+  c2 = atan(sqrt(sq(x2) + sq(y2)) / z2) * 180 / PI;
+  
+  if(a2 >= 0 && b2 >= 0 && c2 >=0) 
+  {
+    a2 = a2;
+    b2 = b2;
+    c2 = c2;
+  }
+  else if(a2 >= 0 && b2 >= 0 && c2 <0)
+  {
+    a2 = 180.00-a2;
+    b2 = 180.00-b2;
+    c2 = c2+180.00;
+  }
+  else if(a2 >= 0 && b2 < 0 && c2 >=0)
+  {
+    a2 = a2;
+    b2 = b2+360.00;
+    c2 = c2;
+  }
+  else if(a2 >= 0 && b2 < 0 && c2 <0)
+  {
+    a2 = 180.00-a2;
+    b2 = 180.00-b2;
+    c2 = c2+180.00;
+  }
+ else if(a2 < 0 && b2 >= 0 && c2 >=0) 
+  {
+    a2 = a2+360;
+    b2 = b2;
+    c2 = c2;
+  }
+  else if(a2 < 0 && b2 >= 0 && c2<0)
+  {
+    a2 = 180.00-a2;
+    b2 = 180.00-b2;
+    c2 = 180.00-c2;
+  }
+  else if(a2 < 0 && b2 < 0 && c2 >=0)
+  {
+    a2 = a2+360.00;
+    b2 = b2+360.00;
+    c2 = 360.00-c2;
+  }
+  else
+  {
+    a2 = 180.00-a2;
+    b2 = 180.00-b2;
+    c2 = c2+180.00;
+  }
+  
+  hand_position();
+  
+
+
+ }
+
+    
+ void writeTo(int device, byte address, byte val) {
+    Wire.beginTransmission(device); //start transmission to device 
+    Wire.write(address);        // send register address
+    Wire.write(val);        // send value to write
+    Wire.endTransmission(); //end transmission
+ }
+
+    
+  void readFrom(int device, byte address, int num, byte buff[]) {
+    Wire.beginTransmission(device); //start transmission to device 
+    Wire.write(address);        //sends address to read from
+    Wire.endTransmission(); //end transmission
+    
+    Wire.beginTransmission(device); //start transmission to device (initiate again)
+    Wire.requestFrom(device, num);    // request 6 bytes from device
+    
+    int i = 0;
+   while(Wire.available())    //device may send less than requested (abnormal)
+   { 
+     buff[i] = Wire.read(); // receive a byte
+     i++;
+   }
+   Wire.endTransmission(); //end transmission
+ }
+ 
+  void FindQuandrant(int x, int y, int z)
+  {
+    if(x >= 0 && y >= 0 && z >=0)  //first quardrant with positive z direction
+    {
+      Serial.println("first quardrant with positive z direction");
+    }
+    
+    if(x < 0 && y >= 0 && z >= 0)  //second quardrant with positive z direction
+    {
+      Serial.println("second quardrant with positive z direction");
+    }
+    
+    if(x < 0 && y < 0 && z >= 0)  //thrid quardrant with positive z direction
+    {
+      Serial.println("thrid quardrant with positive z direction");
+    }
+    
+    if(x >= 0 && y < 0 && z >=0)  //fourth quardrant with positive z direction
+    {
+      Serial.println("fourth quardrant with positive z direction");
+    }
+    
+    if(x >= 0 && y >= 0 && z < 0)  //first quardrant with negative z direction
+    {
+      Serial.println("first quardrant with negative z direction");
+    }
+    
+    if(x < 0 && y >= 0 && z < 0)  //second quardrant with negative z direction
+    {
+      Serial.println("second quardrant with negative z direction");
+    }
+    
+    if(x < 0 && y < 0 && z < 0)  //thrid quardrant with negative z direction
+    {
+      Serial.println("thrid quardrant with negative z direction");
+    }
+    
+    if(x >= 0 && y < 0 && z < 0)  //fourth quardrant with negative z direction
+    {
+      Serial.println("fourth quardrant with negative z direction");
+    }
+  }  
+  
+  void display_first_device()
+  {
+  //we send the x y z values as a string to the serial port
+  Serial.print("Raw:\t");
+  Serial.print(x);
+  Serial.print("   ");   
+  Serial.print(y);
+  Serial.print("   ");   
+  Serial.print(z);
+
+  // Tell us about the this data, but scale it into useful units (G).
+  Serial.print("\tScaled:\t");
+  Serial.print(accl_x);
+  Serial.print("G   ");   
+  Serial.print(accl_y);
+  Serial.print("G   ");   
+  Serial.print(accl_z);
+  Serial.print("G");
+  
+  //Display Magnitude
+  Serial.print("\tMagnitude:\t");
+  Serial.print(mag);
+  
+  Serial.print("\ta:\t");
+  Serial.print(a);
+  Serial.print("\tb:\t");
+  Serial.print(b);
+  Serial.print("\ty:\t");
+  Serial.println(c);
+    
+  }
+  
+  void display_second_device()
+  {
+  //we send the x y z values as a string to the serial port
+  Serial.print("Raw:\t");
+  Serial.print(x2);
+  Serial.print("   ");   
+  Serial.print(y2);
+  Serial.print("   ");   
+  Serial.print(z2);
+
+  // Tell us about the this data, but scale it into useful units (G).
+  Serial.print("\tScaled:\t");
+  Serial.print(accl_x2);
+  Serial.print("G   ");   
+  Serial.print(accl_y2);
+  Serial.print("G   ");   
+  Serial.print(accl_z2);
+  Serial.print("G");
+  
+  //Display Magnitude
+  Serial.print("\tMagnitude:\t");
+  Serial.print(mag2);
+  
+  Serial.print("\ta:\t");
+  Serial.print(a2);
+  Serial.print("\tb:\t");
+  Serial.print(b2);
+  Serial.print("\ty:\t");
+  Serial.println(c2);    
+  }
+  
+  void check_moving(double magnitude)
+  {
+    double num = magnitude;
+    
+    if(num >= 0.90 && num <= 1.10)
+    {
+      Serial.println("No movement_______________No movement");
+    }
+    else
+    {
+      Serial.println("Hand Move");
+    }
+  }
+  
+  void hand_position2()
+  {
+   if(a2 >= 10.00 && a2 <80.00)
+   {
+     Serial.println("plam down right");
+   }
+   else if(a2 >= 80.00 && a2 <100.00)
+   {
+     Serial.println("plam right");
+   }
+   else if(a2 >= 100.00 && a2 < 170.00)
+   {
+     Serial.println("palm up right");
+   }
+   else if(a2 >= 170.00 && a2 < 190.00)
+   {
+     Serial.println("palm up");
+   }  
+   else if(a2 >= 190.00 && a2 < 260.00)
+   {
+     Serial.println("palm up left");
+   }
+   else if(a2 >= 260.00 && a2 < 280.00)
+   {
+     Serial.println("palm left");
+   }
+   else if(a2 >= 280.00 && a2 <350.00)
+   {
+     Serial.println("palm down left");
+   }
+   else
+   {
+     Serial.println("palm down");
+   }
+  }
+  
+   void hand_position()
+  {
+   if(a >= 75.00 && a <105.00)
+   {
+     Serial.println("plam right");
+     display_first_device();
+     if(x  > 400 & !check)
+     {
+       Serial.println("strike right_____________________________");
+       check = true;
+     }
+   }
+   if(a >= 165.00 && a < 195.00)
+   {
+     Serial.println("palm up");
+     display_first_device();
+     if(z < -350  & !check)
+     {
+       Serial.println("strike up_________________________________");
+       check = true;
+     }
+   }  
+   if(a >= 255.00 && a < 285.00)
+   {
+     Serial.println("palm left");
+     display_first_device();
+     if(x  < -400 & !check)
+     {
+       Serial.println("strike left_______________________________");
+       check = true;
+     }
+   }
+   if((a >= 345.00 && a <= 360.00) || (a >= 0.00 && a  < 15.00))
+   {
+     Serial.println("palm down");
+     display_first_device();   
+     if(z  > 400 & !check)
+     {
+       Serial.println("strike down_______________________________");
+       check = true;
+     }
+     if(check)
+     {
+       count++;
+     }
+     if(count == 25)
+     {
+       check = false;
+       count = 0;
+     }
+   }
+   
+ }
