@@ -1,7 +1,3 @@
-//MIDICODE
-// Cable: Middle pin -> Black (Ground)
-// Left pin -> purple (TX0)
-// Right Pin -> White (resistor) -> 5V
 
 void setup() {
   //  Set MIDI baud rate:
