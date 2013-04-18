@@ -13,12 +13,12 @@ void setup()
 {
 
   Wire.begin();        // join i2c bus (address optional for master)
-    //  Set MIDI baud rate:
+  //  Set MIDI baud rate:
   Serial.begin(31250);
 
   resetMIDI();
 
-//  Serial.begin(115200);  // start serial for output
+  //  Serial.begin(115200);  // start serial for output
 
   //Turning on the ADXL345
   writeTo(First_DEVICE, 0x2D, 0);      
@@ -27,7 +27,7 @@ void setup()
   writeTo(Second_DEVICE, 0x2D, 0);      
   writeTo(Second_DEVICE, 0x2D, 16);
   writeTo(Second_DEVICE, 0x2D, 8);
-  
+
 } 
 
 //**************global variable*******************// 
@@ -276,104 +276,104 @@ void FindQuandrant(int x, int y, int z)
 {
   if(x >= 0 && y >= 0 && z >=0)  //first quardrant with positive z direction
   {
-//    Serial.println("first quardrant with positive z direction");
+    //    Serial.println("first quardrant with positive z direction");
   }
 
   if(x < 0 && y >= 0 && z >= 0)  //second quardrant with positive z direction
   {
-//    Serial.println("second quardrant with positive z direction");
+    //    Serial.println("second quardrant with positive z direction");
   }
 
   if(x < 0 && y < 0 && z >= 0)  //thrid quardrant with positive z direction
   {
-//    Serial.println("thrid quardrant with positive z direction");
+    //    Serial.println("thrid quardrant with positive z direction");
   }
 
   if(x >= 0 && y < 0 && z >=0)  //fourth quardrant with positive z direction
   {
-//    Serial.println("fourth quardrant with positive z direction");
+    //    Serial.println("fourth quardrant with positive z direction");
   }
 
   if(x >= 0 && y >= 0 && z < 0)  //first quardrant with negative z direction
   {
-//    Serial.println("first quardrant with negative z direction");
+    //    Serial.println("first quardrant with negative z direction");
   }
 
   if(x < 0 && y >= 0 && z < 0)  //second quardrant with negative z direction
   {
-//    Serial.println("second quardrant with negative z direction");
+    //    Serial.println("second quardrant with negative z direction");
   }
 
   if(x < 0 && y < 0 && z < 0)  //thrid quardrant with negative z direction
   {
-//    Serial.println("thrid quardrant with negative z direction");
+    //    Serial.println("thrid quardrant with negative z direction");
   }
 
   if(x >= 0 && y < 0 && z < 0)  //fourth quardrant with negative z direction
   {
-//    Serial.println("fourth quardrant with negative z direction");
+    //    Serial.println("fourth quardrant with negative z direction");
   }
 }  
 
 void display_first_device()
 {
-//  //we send the x y z values as a string to the serial port
-//  Serial.print("Raw:\t");
-//  Serial.print(x);
-//  Serial.print("   ");   
-//  Serial.print(y);
-//  Serial.print("   ");   
-//  Serial.print(z);
-//  // Tell us about the this data, but scale it into useful units (G).
-//  Serial.print("\tScaled:\t");
-//  Serial.print(accl_x);
-//  Serial.print("G   ");   
-//  Serial.print(accl_y);
-//  Serial.print("G   ");   
-//  Serial.print(accl_z);
-//  Serial.print("G");
-//
-//  //Display Magnitude
-//  Serial.print("\tMagnitude:\t");
-//  Serial.print(mag);
-//
-//  Serial.print("\ta:\t");
-//  Serial.print(a);
-//  Serial.print("\tb:\t");
-//  Serial.print(b);
-//  Serial.print("\ty:\t");
-//  Serial.println(c);
+  //  //we send the x y z values as a string to the serial port
+  //  Serial.print("Raw:\t");
+  //  Serial.print(x);
+  //  Serial.print("   ");   
+  //  Serial.print(y);
+  //  Serial.print("   ");   
+  //  Serial.print(z);
+  //  // Tell us about the this data, but scale it into useful units (G).
+  //  Serial.print("\tScaled:\t");
+  //  Serial.print(accl_x);
+  //  Serial.print("G   ");   
+  //  Serial.print(accl_y);
+  //  Serial.print("G   ");   
+  //  Serial.print(accl_z);
+  //  Serial.print("G");
+  //
+  //  //Display Magnitude
+  //  Serial.print("\tMagnitude:\t");
+  //  Serial.print(mag);
+  //
+  //  Serial.print("\ta:\t");
+  //  Serial.print(a);
+  //  Serial.print("\tb:\t");
+  //  Serial.print(b);
+  //  Serial.print("\ty:\t");
+  //  Serial.println(c);
 
 }
 
 void display_second_device()
 {
-//  //we send the x y z values as a string to the serial port
-//  Serial.print("Raw:\t");
-//  Serial.print(x2);
-//  Serial.print("   ");   
-//  Serial.print(y2);
-//  Serial.print("   ");   
-//  Serial.print(z2);
-//  // Tell us about the this data, but scale it into useful units (G).
-//  Serial.print("\tScaled:\t");
-//  Serial.print(accl_x2);
-//  Serial.print("G   ");   
-//  Serial.print(accl_y2);
-//  Serial.print("G   ");   
-//  Serial.print(accl_z2);
-//  Serial.print("G");
-//
-//  //Display Magnitude
-//  Serial.print("\tMagnitude:\t");
-//  Serial.print(mag2);
-//
-//  Serial.print("\ta:\t");
-//  Serial.print(a2);
-//  Serial.print("\tb:\t");
-//  Serial.print(b2);
-//  Serial.print("\ty:\t");
-//  Serial.println(c2);    
+  //  //we send the x y z values as a string to the serial port
+  //  Serial.print("Raw:\t");
+  //  Serial.print(x2);
+  //  Serial.print("   ");   
+  //  Serial.print(y2);
+  //  Serial.print("   ");   
+  //  Serial.print(z2);
+  //  // Tell us about the this data, but scale it into useful units (G).
+  //  Serial.print("\tScaled:\t");
+  //  Serial.print(accl_x2);
+  //  Serial.print("G   ");   
+  //  Serial.print(accl_y2);
+  //  Serial.print("G   ");   
+  //  Serial.print(accl_z2);
+  //  Serial.print("G");
+  //
+  //  //Display Magnitude
+  //  Serial.print("\tMagnitude:\t");
+  //  Serial.print(mag2);
+  //
+  //  Serial.print("\ta:\t");
+  //  Serial.print(a2);
+  //  Serial.print("\tb:\t");
+  //  Serial.print(b2);
+  //  Serial.print("\ty:\t");
+  //  Serial.println(c2);    
 }
 
 void check_moving(double magnitude)
@@ -382,11 +382,11 @@ void check_moving(double magnitude)
 
   if(num >= 0.90 && num <= 1.10)
   {
-//    Serial.println("No movement_______________No movement");
+    //    Serial.println("No movement_______________No movement");
   }
   else
   {
-//    Serial.println("Hand Move");
+    //    Serial.println("Hand Move");
   }
 }
 
@@ -394,19 +394,19 @@ void hand_position2()
 {
   if(a2 >= 45.00 && a2 < 135.00)
   {
-//    Serial.println("plam right");
+    //    Serial.println("plam right");
   }
   else if(a2 >= 135 && a2 < 225)
   {
-//    Serial.println("palm up");
+    //    Serial.println("palm up");
   }  
   else if(a2 >= 225 && a2 < 315)
   {
-//    Serial.println("palm left");
+    //    Serial.println("palm left");
   }
   else
   {
-//    Serial.println("palm down");
+    //    Serial.println("palm down");
   }
 }
 
@@ -418,52 +418,52 @@ void hand_position()
     case 0:
       if(a >= 45.00 && a < 135.00)
       {
-//        Serial.println("plam right");
+        //        Serial.println("plam right");
         display_first_device();
         if(x  > 400 & !check)
         {
-//          Serial.println("strike right_____________________________");
+          //          Serial.println("strike right_____________________________");
           check = true;
-	currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 0;
           StateCheck = true;
         }
       }  
       if(a >= 135.00 && a < 225.00)
       {
-//        Serial.println("palm up");
+        //        Serial.println("palm up");
         display_first_device();
         if(z < -350  & !check)
         {
-//          Serial.println("strike up_________________________________");
+          //          Serial.println("strike up_________________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 1;
           StateCheck = true;
         }
       }  
       if(a >= 225.00 && a < 315.00)
       {
-//        Serial.println("palm left");
+        //        Serial.println("palm left");
         display_first_device();
         if(x  < -400 & !check)
         {
-//          Serial.println("strike left_______________________________");
+          //          Serial.println("strike left_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 2;
           StateCheck = true;
         }
       }
       if((a >= 315.00 && a <= 360.00) || (a >= 0.00 && a  < 45.00))
       {
-//        Serial.println("palm down");
+        //        Serial.println("palm down");
         display_first_device();   
         if(z  > 400 & !check)
         {
-//          Serial.println("strike down_______________________________");
+          //          Serial.println("strike down_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 3;
           StateCheck = true;
         }
@@ -472,52 +472,52 @@ currentChord = nextChord;
     case 1:
       if(a >= 45.00 && a < 135.00)
       {
-//        Serial.println("plam right");
+        //        Serial.println("plam right");
         display_first_device();
         if(x  > 400 & !check)
         {
-//          Serial.println("strike right_____________________________");
+          //          Serial.println("strike right_____________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 0;
           StateCheck = true;
         }
       }
       if(a >= 135.00 && a < 225.00)
       {
-//        Serial.println("palm up");
+        //        Serial.println("palm up");
         display_first_device();
         if(z < -350  & !check)
         {
-//          Serial.println("strike up_________________________________");
+          //          Serial.println("strike up_________________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 1;
           StateCheck = true;
         }
       }  
       if(a >= 225.00 && a < 315.00)
       {
-//        Serial.println("palm left");
-//        display_first_device();
+        //        Serial.println("palm left");
+        //        display_first_device();
         if(x  < -400 & !check)
         {
-//          Serial.println("strike left_______________________________");
+          //          Serial.println("strike left_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 2;
           StateCheck = true;
         }
       }
       if((a >= 315.00 && a <= 360.00) || (a >= 0.00 && a  < 45.00))
       {
-//        Serial.println("palm down");
-//        display_first_device();   
+        //        Serial.println("palm down");
+        //        display_first_device();   
         if(z  > 400 & !check)
         {
-//          Serial.println("strike down_______________________________");
+          //          Serial.println("strike down_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 3;
           StateCheck = true;
         }
@@ -526,52 +526,52 @@ currentChord = nextChord;
     default: 
       if(a >= 45.00 && a < 135.00)
       {
-//        Serial.println("plam right");
+        //        Serial.println("plam right");
         display_first_device();
         if(x  > 400 & !check)
         {
-//          Serial.println("strike right_____________________________");
+          //          Serial.println("strike right_____________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 0;
 
         }
       }
       if(a >= 135.00 && a < 225.00)
       {
-//        Serial.println("palm up");
+        //        Serial.println("palm up");
         display_first_device();
         if(z < -350  & !check)
         {
-//          Serial.println("strike up_________________________________");
+          //          Serial.println("strike up_________________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 1;
           StateCheck = true;
         }
       }  
       if(a >= 225.00 && a < 315.00)
       {
-//        Serial.println("palm left");
+        //        Serial.println("palm left");
         display_first_device();
         if(x  < -400 & !check)
         {
-//          Serial.println("strike left_______________________________");
+          //          Serial.println("strike left_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 2;
           StateCheck = true;
         }
       }
       if((a >= 315.00 && a <= 360.00) || (a >= 0.00 && a  < 45.00))
       {
-//        Serial.println("palm down");
+        //        Serial.println("palm down");
         display_first_device();   
         if(z  > 400 & !check)
         {
-//          Serial.println("strike down_______________________________");
+          //          Serial.println("strike down_______________________________");
           check = true;
-currentChord = nextChord;
+          currentChord = nextChord;
           nextChord = 3;
           StateCheck = true;
         }
@@ -586,9 +586,9 @@ currentChord = nextChord;
       check = false;
       count = 0;
       StateCheck = false;
-	stateMachine(0x69);//Volume
-//      Serial.println(State);
-//      Serial.println(currentChord);
+      stateMachine(0x69);//Volume
+      //      Serial.println(State);
+      //      Serial.println(currentChord);
       State++;
       if(State >2)
       {
@@ -612,59 +612,60 @@ void resetMIDI(){ //Turns off all notes on channel 1.
     noteOn(0x90, note, 0x00);   
 }
 void stateMachine(int loudness){
-	switch(currentChord){
-	case 0: //Current Chord was a I, can go to any chord
-		playChord(nextChord, loudness);
-		break;
-	case 1: //Current Chord is a IV chord. Can go to any chord but iV
-		if (nextChord == 3)
-		nextChord = 2;
-		playChord(nextChord,loudness);
-		break;
-	case 2: 
-		if (nextChord == 1)
-		playChord(nextChord,loudness);
-		break;
-	case 3: 
-		if (nextChord <2)
-		nextChord = 1;
-		if (nextChord >1)
-		nextChord = 2;
-		break;
-}
+  switch(currentChord){
+  case 0: //Current Chord was a I, can go to any chord
+    playChord(nextChord, loudness);
+    break;
+  case 1: //Current Chord is a IV chord. Can go to any chord but iV
+    if (nextChord == 3)
+      nextChord = 2;
+    playChord(nextChord,loudness);
+    break;
+  case 2: 
+    if (nextChord == 1)
+      playChord(nextChord,loudness);
+    break;
+  case 3: 
+    if (nextChord <2)
+      nextChord = 1;
+    if (nextChord >1)
+      nextChord = 2;
+    break;
+  }
 
 }
 
 
 void playChord(int chord, int loudness){ //Loudness is an int from 0 (off) to 127
-int root = 0;
-resetMIDI();
-switch (chord){
-	case 0: //Tonic, I chord
-		root = 0x30;
-		noteOn(0x90, root, loudness); //Channel 1, C3, volume
-		noteOn(0x90, root+4, loudness); 	
-		noteOn(0x90, root+7, loudness); 
-		break;
-	case 1: //Predominant, IV chord, root position
-		root = 0x30+5-12;
-		noteOn(0x90, root, loudness); 
-		noteOn(0x90, root+4, loudness); 
-		noteOn(0x90, root+7, loudness);
-		break;
-	case 2: //Dominant, V7 chord, Root Position
-		root = 0x30+7-12;
-		noteOn(0x90, root, loudness); 
-		noteOn(0x90, root+4, loudness); 
-		noteOn(0x90, root+7, loudness);
-		noteOn(0x90, root+10, loudness);
-		break;
-	case 3: //Tonic, vi chord, root position
-		root = 0x30;
-		noteOn(0x90, root, loudness);
-		noteOn(0x90, root+4, loudness); 
-		noteOn(0x90, root-3, loudness); 		
-		break;
+  int root = 0;
+  resetMIDI();
+  switch (chord){
+  case 0: //Tonic, I chord
+    root = 0x30;
+    noteOn(0x90, root, loudness); //Channel 1, C3, volume
+    noteOn(0x90, root+4, loudness); 	
+    noteOn(0x90, root+7, loudness); 
+    break;
+  case 1: //Predominant, IV chord, root position
+    root = 0x30+5-12;
+    noteOn(0x90, root, loudness); 
+    noteOn(0x90, root+4, loudness); 
+    noteOn(0x90, root+7, loudness);
+    break;
+  case 2: //Dominant, V7 chord, Root Position
+    root = 0x30+7-12;
+    noteOn(0x90, root, loudness); 
+    noteOn(0x90, root+4, loudness); 
+    noteOn(0x90, root+7, loudness);
+    noteOn(0x90, root+10, loudness);
+    break;
+  case 3: //Tonic, vi chord, root position
+    root = 0x30;
+    noteOn(0x90, root, loudness);
+    noteOn(0x90, root+4, loudness); 
+    noteOn(0x90, root-3, loudness); 		
+    break;
 
-	}
+  }
 }
+
